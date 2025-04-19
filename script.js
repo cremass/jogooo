@@ -168,120 +168,109 @@ for (let i = 0; i < corpo.length; i++) {
         });
         // Criando mais 3 botões
         // Criando mais 3 botões
-const cima = document.createElement('button')
-const baixo = document.createElement('button')
-const esquerda = document.createElement('button')
-const direita = document.createElement('button')
+// Criação dos 4 botões
+let btnCima = document.createElement('button');
+let btnBaixo = document.createElement('button');
+let btnEsquerda = document.createElement('button');
+let btnDireita = document.createElement('button');
 
-// Texto dos botões
-cima.innerText = '↑'
-baixo.innerText = '↓'
-esquerda.innerText = '←'
-direita.innerText = '→'
+btnCima.innerText = "↑";
+btnBaixo.innerText = "↓";
+btnEsquerda.innerText = "←";
+btnDireita.innerText = "→";
 
-// Estilo dos botões
-const botoes = [cima, baixo, esquerda, direita]
-botoes.forEach(botao => {
-  botao.style.width = '40px'
-  botao.style.height = '40px'
-  botao.style.margin = '2px'
-  botao.style.background = 'red'
-  botao.style.color = 'white'
-  botao.style.fontWeight = 'bold'
-  botao.style.border = 'none'
-  botao.style.borderRadius = '4px'
-})
+// Estilo comum dos botões
+[btnCima, btnBaixo, btnEsquerda, btnDireita].forEach(btn => {
+  btn.style.width = '50px';
+  btn.style.height = '50px';
+  btn.style.margin = '5px';
+  btn.style.fontSize = '20px';
+});
 
-// Container para layout
-const botoesContainer = document.createElement('div')
-botoesContainer.style.display = 'flex'
-botoesContainer.style.flexDirection = 'column'
-botoesContainer.style.alignItems = 'center'
-botoesContainer.style.position = 'absolute'
-botoesContainer.style.bottom = '10px'
-botoesContainer.style.left = '50%'
-botoesContainer.style.transform = 'translateX(-50%)'
+// Layout dos controles
+controles.style.display = 'flex';
+controles.style.flexWrap = 'wrap';
+controles.style.justifyContent = 'center';
+controles.style.position = 'fixed';
+controles.style.bottom = '10px';
+controles.style.left = '50%';
+controles.style.transform = 'translateX(-50%)';
+controles.style.zIndex = '1000';
 
-// Layout tipo cruz
-const meio = document.createElement('div')
-meio.style.display = 'flex'
-meio.appendChild(esquerda)
-meio.appendChild(direita)
+// Adiciona os botões
+controles.appendChild(btnCima);
+controles.appendChild(btnEsquerda);
+controles.appendChild(btnDireita);
+controles.appendChild(btnBaixo);
 
-botoesContainer.appendChild(cima)
-botoesContainer.appendChild(meio)
-botoesContainer.appendChild(baixo)
+body.appendChild(controles);
 
-document.body.appendChild(botoesContainer)
-// Funções para movimentar com animação
-let moveIntervalCima, moveIntervalBaixo, moveIntervalEsquerda, moveIntervalDireita;
+// Variáveis de movimento
+let intervaloCima, intervaloBaixo, intervaloEsquerda, intervaloDireita;
+const cabeca = document.querySelector('.cabeca');
 
-// CIMA
-cima.addEventListener('mousedown', () => {
-  const cabeca = document.querySelector('.cabeca');
+// Funções de movimento
+function moverCima() {
+  posi -= 5;
+  bonecosp.style.top = posi + 'px';
   cabeca.id = 'anima';
-  moveIntervalCima = setInterval(() => {
-    posi -= 5;
-    bonecosp.style.top = posi + 'px';
-  }, 50);
-});
-cima.addEventListener('mouseup', () => {
-  clearInterval(moveIntervalCima);
-  document.querySelector('.cabeca').id = 'parado';
-});
-cima.addEventListener('mouseleave', () => {
-  clearInterval(moveIntervalCima);
-  document.querySelector('.cabeca').id = 'parado';
-});
-
-// BAIXO
-baixo.addEventListener('mousedown', () => {
-  const cabeca = document.querySelector('.cabeca');
+}
+function moverBaixo() {
+  posi += 5;
+  bonecosp.style.top = posi + 'px';
   cabeca.id = 'anima';
-  moveIntervalBaixo = setInterval(() => {
-    posi += 5;
-    bonecosp.style.top = posi + 'px';
-  }, 50);
-});
-baixo.addEventListener('mouseup', () => {
-  clearInterval(moveIntervalBaixo);
-  document.querySelector('.cabeca').id = 'parado';
-});
-baixo.addEventListener('mouseleave', () => {
-  clearInterval(moveIntervalBaixo);
-  document.querySelector('.cabeca').id = 'parado';
-});
-
-// ESQUERDA
-esquerda.addEventListener('mousedown', () => {
+}
+function moverEsquerda() {
+  posileft -= 5;
+  bonecosp.style.left = posileft + 'px';
   bonecosp.id = 'anima';
-  moveIntervalEsquerda = setInterval(() => {
-    posileft -= 5;
-    bonecosp.style.left = posileft + 'px';
-  }, 50);
-});
-esquerda.addEventListener('mouseup', () => {
-  clearInterval(moveIntervalEsquerda);
-  bonecosp.id = 'parado';
-});
-esquerda.addEventListener('mouseleave', () => {
-  clearInterval(moveIntervalEsquerda);
-  bonecosp.id = 'parado';
-});
-
-// DIREITA
-direita.addEventListener('mousedown', () => {
+}
+function moverDireita() {
+  posileft += 5;
+  bonecosp.style.left = posileft + 'px';
   bonecosp.id = 'anima';
-  moveIntervalDireita = setInterval(() => {
-    posileft += 5;
-    bonecosp.style.left = posileft + 'px';
-  }, 50);
-});
-direita.addEventListener('mouseup', () => {
-  clearInterval(moveIntervalDireita);
+}
+
+// Toque: CIMA
+btnCima.ontouchstart = () => {
+  clearInterval(intervaloCima);
+  moverCima();
+  intervaloCima = setInterval(moverCima, 50);
+};
+btnCima.ontouchend = () => {
+  clearInterval(intervaloCima);
+  cabeca.id = 'parado';
+};
+
+// Toque: BAIXO
+btnBaixo.ontouchstart = () => {
+  clearInterval(intervaloBaixo);
+  moverBaixo();
+  intervaloBaixo = setInterval(moverBaixo, 50);
+};
+btnBaixo.ontouchend = () => {
+  clearInterval(intervaloBaixo);
+  cabeca.id = 'parado';
+};
+
+// Toque: ESQUERDA
+btnEsquerda.ontouchstart = () => {
+  clearInterval(intervaloEsquerda);
+  moverEsquerda();
+  intervaloEsquerda = setInterval(moverEsquerda, 50);
+};
+btnEsquerda.ontouchend = () => {
+  clearInterval(intervaloEsquerda);
   bonecosp.id = 'parado';
-});
-direita.addEventListener('mouseleave', () => {
-  clearInterval(moveIntervalDireita);
+};
+
+// Toque: DIREITA
+btnDireita.ontouchstart = () => {
+  clearInterval(intervaloDireita);
+  moverDireita();
+  intervaloDireita = setInterval(moverDireita, 50);
+};
+btnDireita.ontouchend = () => {
+  clearInterval(intervaloDireita);
   bonecosp.id = 'parado';
-});
+};
