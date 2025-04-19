@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div#anima{
+            animation: torso-animation 300ms infinite ease-in-out;
+        }
+        @keyframes torso-animation{
+            0%{
+                transform: rotate(0deg);
+
+            }
+
+            20%{
+                transform: rotate(20deg);
+            }
+            40%{
+                transform: rotate(0deg);
+            }
+            60%{
+                transform: rotate(-20deg);
+            }
+            100%{
+                transform: rotate(0deg);
+            }
+        }
+    </style>
+</head>
+<body onload="logar()">
+    <div id="bonecos">
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
